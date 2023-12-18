@@ -17,16 +17,15 @@ find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDDEVICE REQUIRED libsystemd)
 # Create executable using the specified src
-#INCLUDE_DIRECTORIES(${APP_INCLUDE_DIRS} src src/ui src/ui/qcustomplot-source)
+INCLUDE_DIRECTORIES(${APP_INCLUDE_DIRS} src)
 add_executable(${PROJECT_NAME}
-    lucky_you.h lucky_you.cpp lucky_you.ui
-    server.h server.cpp
-    commands.h commands.cpp
-    speak.h speak.cpp
-    batterystatus.h batterystatus.cpp
-    threaddata.h
-    mugshot.h mugshot.cpp
-    main.cpp)
+    src/lucky_you.h src/lucky_you.cpp src/lucky_you.ui
+    src/server.h src/server.cpp
+    src/speak.h src/speak.cpp
+    src/batterystatus.h src/batterystatus.cpp
+    src/threaddata.h
+    src/mugshot.h src/mugshot.cpp
+    src/main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     Qt::Bluetooth
@@ -46,7 +45,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -Wall>
     $<$<CXX_COMPILER_ID:MSVC>: /W3>
 )
-#configure_file(ekg.txt ${CMAKE_BINARY_DIR}/ekg.txt COPYONLY)
 
 
 
