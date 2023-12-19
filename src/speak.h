@@ -3,6 +3,10 @@
 
 #include <QtTextToSpeech>
 #include <QObject>
+
+/**
+ * @brief The Speak class plays artificial sound with QtTextToSpeech
+ */
 class Speak : public QObject
 {
     Q_OBJECT

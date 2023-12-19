@@ -2,14 +2,18 @@
 #define THREADDATA_H
 
 #include <systemd/sd-device.h>
-#include <systemd/sd-login.h>
-#include <systemd/sd-bus.h>
-#include <systemd/sd-id128.h>
 #include <thread>
 #include <atomic>
 #include <memory>
 #include <condition_variable>
 
+/**
+ * @brief The ThreadData struct holds several variables to get the batterystatus and if the status is changed
+ * @var *device: placeholder to communicate with systemd
+ * @var current_status: string with the current battery status
+ * @var pbatteryStatus: unique_ptr to the batteryStatus thread
+ * @var cv_changeStatus: condition variable to notify other threads when the battery status changed
+ */
 struct ThreadData {
 
     sd_device *device = NULL;

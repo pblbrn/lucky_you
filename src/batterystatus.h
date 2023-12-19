@@ -12,8 +12,9 @@
 #include <memory>
 
 
-#include "threaddata.h"
-
+/**
+ * @brief The BatteryStatus class checkes if the battery is currently charging, discharging, not charging
+ */
 class BatteryStatus
 {
 

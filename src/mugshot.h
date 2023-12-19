@@ -5,7 +5,9 @@
 #include <QImage>
 #include <opencv2/opencv.hpp>
 
-
+/**
+ * @brief The MugShot class captures a image with opencv from the webcam
+ */
 class MugShot : public QObject
 {
     Q_OBJECT

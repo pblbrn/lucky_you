@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QWidget>
+#include <QObject>
 
 #include <QtBluetooth/qbluetoothaddress.h>
 #include <QtBluetooth/qbluetoothserviceinfo.h>
@@ -10,7 +10,9 @@ QT_FORWARD_DECLARE_CLASS(QBluetoothServer)
 QT_FORWARD_DECLARE_CLASS(QBluetoothSocket)
 
 QT_USE_NAMESPACE
-
+ /**
+ * @brief The Server class is the bluetooth server which communicates with the QT Bluetooth socket
+ */
 class Server : public QObject
 {
     Q_OBJECT

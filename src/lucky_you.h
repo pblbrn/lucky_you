@@ -49,9 +49,17 @@ private:
     std::mutex m_mu;
     std::string lastStatus;
 
+
     void interpretMsg(const QString &sender, const QString &message);
     bool m_clientConnected {false};
     bool threatMode{false};
+    bool exitNow{false};
+protected:
+    inline void closeEvent(QCloseEvent *event) override
+        {
+        exitNow = true;
+    }
+
 
 };
 

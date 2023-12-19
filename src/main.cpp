@@ -11,14 +11,14 @@
 
 ThreadData threadData;
 
-BatteryStatus bs;
+//BatteryStatus bs;
 
 
-void monitorBattery(void)
+void monitorBattery(BatteryStatus *bs)
 {
-    bs.batteryStatusMonitor();
+    bs->batteryStatusMonitor();
 }
-void get(Lucky_you *app)
+void getChange(Lucky_you *app)
 {
     app->getStatusChanged();
 }
@@ -27,25 +27,20 @@ void get(Lucky_you *app)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    BatteryStatus bs;
 
     threadData.monitor  = true;
-    threadData.pbatteryStatus = std::make_unique<std::thread>(monitorBattery);
+    threadData.pbatteryStatus = std::make_unique<std::thread>(monitorBattery, &bs);
     Lucky_you d;
     d.show();
-    std::thread taker(get, &d);
+    std::thread statusChange(getChange, &d);
 
     app.exec();
 
     threadData.monitor = false;
     threadData.pbatteryStatus->join();
-    taker.join();
+    threadData.cv_changeStatus.notify_all();
+    statusChange.join();
 
     return 0;
 }
-/**
-Instanz von bt generieren
-widget generieren
-überwachung als thread implementieren
-bei event and widget und an bt weitergeben
-bei message status abfragen dann and bt weitergeben.
-**/

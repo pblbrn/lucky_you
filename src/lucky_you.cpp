@@ -57,7 +57,6 @@ Lucky_you::~Lucky_you()
     delete mugShot;
     delete server;
     delete speak;
-    threatMode =false;
 
 }
 
@@ -69,21 +68,20 @@ void Lucky_you::sendClicked()
     if (!threatMode)
     {
         threatMode = true;
-    emit talk("Ready");
-    emit sendMessage(QString::fromStdString(threadData.current_status));
-    if (!m_clientConnected)
-    {
-        emit talk ("no client connected!");
+        emit talk("Ready");
+        emit sendMessage(QString::fromStdString(threadData.current_status));
+        if (!m_clientConnected)
+        {
+            emit talk ("no client connected!");
+        }
+        ui->sendButton->setText("Stop");
     }
-    ui->sendButton->setText("Stop");
 
-
-    }
     else
     {
-    threatMode = false;
+        threatMode = false;
         emit talk("Stop");
-    ui->sendButton->setText("Start");
+        ui->sendButton->setText("Start");
     }
     ui->sendButton->setEnabled(true);
 
@@ -139,18 +137,20 @@ void Lucky_you::showMugShot(QImage image)
 
 void Lucky_you::getStatusChanged()
 {
-
-
         while (threadData.monitor){
             lastStatus = threadData.current_status;
             std::unique_lock<std::mutex> qLocker{m_mu};
-            threadData.cv_changeStatus.wait(qLocker,[this](){return !(lastStatus == threadData.current_status) && threatMode;});
-            QString msg {QString::fromStdString("Status of battery changed to "+ threadData.current_status)};
-            emit sendMessage(msg);
-            if (threadData.current_status == "Discharging"){
-                emit takeMugShot();
+            threadData.cv_changeStatus.wait(qLocker,[this](){return (threatMode && !(lastStatus==threadData.current_status)) || exitNow;});
+            if(threadData.monitor)
+            {
+                QString msg {QString::fromStdString("Status of battery changed to "+ threadData.current_status)};
+                emit sendMessage(msg);
+                if (threadData.current_status == "Discharging"){
+                    emit takeMugShot();
+                }
             }
-
-
         }
 }
+
+
+
